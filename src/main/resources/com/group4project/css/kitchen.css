@@ -1,0 +1,47 @@
+.upperPane{
+    -fx-background-color : #fff;
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.1), 10, 0, 0, 10);
+}
+.logOut-btn{
+    -fx-background-color : #fff;
+    -fx-background-radius : 20px;
+    -fx-text-fill: red;
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.2), 10, 0, 0, 10);
+    -fx-font-weigth: bold;
+}
+.logOut-btn:hover{
+    -fx-background-color:#efe4e4;
+}
+.scrollPane{
+    -fx-background-color: #fff;
+}
+.start-btn{
+    -fx-text-fill:#fff;
+    -fx-background-color: #000;
+    -fx-background-radius: 20px;
+}
+.start-btn:hover{
+    -fx-background-color: gray;
+
+}
+.finish-btn{
+    -fx-background-color: #00df82;
+    -fx-background-radius: 20px;
+
+    /*
+        -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.2), 10, 0, 0, 10);
+    */
+}
+.finish-btn:hover{
+    -fx-background-color: #0c955b;
+}
+.orderPane{
+    -fx-background-color: lightgray;
+    -fx-background-radius : 10px;
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.2), 10, 0, 0, 10);
+}
+.order-upperPane{
+    -fx-background-color: lightgray;
+    -fx-background-radius:10px 10px 0 0 ;
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.1), 10, 0, 0, 10);
+}

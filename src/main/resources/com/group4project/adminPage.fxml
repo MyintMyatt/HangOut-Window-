@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1370.0" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group4project.AdminPageController">
+   <center>
+      <AnchorPane prefHeight="682.0" prefWidth="587.0" BorderPane.alignment="CENTER">
+         <children>
+            <ScrollPane fx:id="searchPane" layoutY="75.2" prefHeight="629.0" prefWidth="747.0" style="-fx-background-color: lightgray;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
+               <content>
+                  <GridPane fx:id="searchGP">
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fx:id="dishPane" layoutY="76.0" prefHeight="628.0" prefWidth="747.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="76.0">
+               <content>
+                  <GridPane fx:id="dishGP">
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fx:id="coolDrinkPane" layoutY="75.2" prefHeight="629.0" prefWidth="747.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
+               <content>
+                  <GridPane fx:id="coolDrinkGP">
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fx:id="soupPane" layoutY="78.4" prefHeight="626.0" prefWidth="747.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="78.0">
+               <content>
+                  <GridPane fx:id="soupGP">
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fx:id="starterPane" layoutY="76.8" prefHeight="627.0" prefWidth="747.0" style="-fx-background-color: blue;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="77.0">
+               <content>
+                  <GridPane fx:id="starterGP">
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+            <ScrollPane fx:id="staffManagementPane" layoutY="150.4" prefHeight="554.0" prefWidth="1355.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
+               <content>
+                  <GridPane fx:id="staffManagementGP">
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </ScrollPane>
+            <Pane layoutX="2.0" prefHeight="78.0" prefWidth="1123.0">
+               <children>
+                  <Pane layoutX="256.0" layoutY="11.0" prefHeight="53.0" prefWidth="484.0" styleClass="searchBarPane">
+                     <children>
+                        <TextField fx:id="searchTF" layoutX="43.0" layoutY="2.0" prefHeight="46.0" prefWidth="412.0" promptText="Search Menu..............." styleClass="searchTF">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="14.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@photo/magnifying-glass%20(1).png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+                  <Label fx:id="categoryLabel" layoutX="28.0" layoutY="18.0" prefHeight="42.0" prefWidth="223.0" text="Searching Menu">
+                     <font>
+                        <Font name="System Bold Italic" size="23.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="staffManagementUpperPane" layoutY="78.0" maxHeight="65.0" prefHeight="65.0" prefWidth="1126.0" styleClass="staff-col-uppear-pane" stylesheets="@css/home.css" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="78.0">
+               <children>
+                  <Label alignment="CENTER" layoutX="70.0" layoutY="14.0" prefHeight="39.0" prefWidth="134.0" text="STAFF ID">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="204.0" prefHeight="67.0" prefWidth="173.0" text="STAFF NAME" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="359.0" layoutY="14.0" prefHeight="39.0" prefWidth="149.0" text="STAFF TYPE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="491.0" layoutY="14.0" prefHeight="39.0" prefWidth="127.0" text="PHONE NO.">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="635.0" prefHeight="65.0" prefWidth="178.0" text="EMAIL">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="932.0" layoutY="12.0" mnemonicParsing="false" onAction="#addNewStaffBtnAction" prefHeight="41.0" prefWidth="149.0" styleClass="add-new-staff-btn" text="Add New Staff">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane fx:id="updateMenuPane" layoutX="14.0" layoutY="28.0" prefHeight="704.0" prefWidth="1126.4" styleClass="menuUpperPane" stylesheets="@css/menu.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Pane layoutX="293.0" layoutY="40.0" prefHeight="612.0" prefWidth="590.0" styleClass="addNewMenuPane">
+                     <children>
+                        <Button layoutX="329.0" layoutY="483.0" mnemonicParsing="false" onAction="#updateMenu" prefHeight="47.0" prefWidth="117.0" styleClass="addMenubtn" text="Update">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="154.0" layoutY="484.0" mnemonicParsing="false" onAction="#cancelUpdateMenu" prefHeight="46.0" prefWidth="117.0" styleClass="addMenubtn" text="Cancel">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Button>
+                        <Pane layoutX="343.0" layoutY="148.0" prefHeight="247.0" prefWidth="196.0" styleClass="imagePane">
+                           <children>
+                              <ImageView fx:id="um_image" fitHeight="182.0" fitWidth="165.0" layoutX="14.0" layoutY="14.0" onMouseClicked="#importUpdateMenuImage" pickOnBounds="true" preserveRatio="true" />
+                              <Button layoutX="32.0" layoutY="202.0" mnemonicParsing="false" onAction="#importUpdateMenuImage" prefHeight="26.0" prefWidth="132.0" style="-fx-background-color: #5d5d5d; -fx-text-fill: #fff;" styleClass="addMenubtn" text="import">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </Pane>
+                        <TextField fx:id="um_unitPrice" layoutX="67.0" layoutY="334.0" prefHeight="49.0" prefWidth="237.0" promptText="Enter Unit Price">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="um_stocks" layoutX="68.0" layoutY="247.0" prefHeight="49.0" prefWidth="235.0" promptText="Add Stocks">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <Label alignment="CENTER" layoutX="156.0" layoutY="44.0" prefHeight="40.0" prefWidth="263.0" text="Update Menu">
+                           <font>
+                              <Font name="System Bold" size="21.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="m_currentStocks" layoutX="68.0" layoutY="164.0" prefHeight="49.0" prefWidth="235.0" promptText="Current Stocks :">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <Label layoutX="271.0" layoutY="334.0" prefHeight="49.0" prefWidth="33.0" text="Ks">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <Pane fx:id="menuPane" layoutX="87.0" layoutY="144.0" prefHeight="704.0" prefWidth="1126.4" styleClass="menuUpperPane" stylesheets="@css/menu.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Pane layoutX="278.0" layoutY="46.0" prefHeight="612.0" prefWidth="599.0" styleClass="addNewMenuPane">
+                     <children>
+                        <Button layoutX="315.0" layoutY="476.0" mnemonicParsing="false" onAction="#confirmaddNewMenu" prefHeight="47.0" prefWidth="133.0" styleClass="addMenubtn" text="Add Menu">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="132.0" layoutY="474.0" mnemonicParsing="false" onAction="#cancelAddNewMenu" prefHeight="47.0" prefWidth="133.0" styleClass="addMenubtn" text="Cancel">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Button>
+                        <Pane layoutX="334.0" layoutY="130.0" prefHeight="255.0" prefWidth="191.0" styleClass="imagePane">
+                           <children>
+                              <ImageView fx:id="menuImage" fitHeight="186.0" fitWidth="164.0" layoutX="14.0" layoutY="14.0" onMouseClicked="#importNewMenuImage" pickOnBounds="true" preserveRatio="true" />
+                              <Button layoutX="26.0" layoutY="210.0" mnemonicParsing="false" onAction="#importNewMenuImage" prefHeight="31.0" prefWidth="138.0" style="-fx-background-color: #5d5d5d; -fx-text-fill: #fff;" styleClass="addMenubtn" text="import">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </Pane>
+                        <TextField fx:id="menuName" layoutX="83.0" layoutY="141.0" prefHeight="44.0" prefWidth="212.0" promptText="Enter Menu Name">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="menuUnitPrice" layoutX="86.0" layoutY="213.0" prefHeight="44.0" prefWidth="212.0" promptText="Enter Unit Price">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="noOfStocks" layoutX="86.0" layoutY="284.0" prefHeight="44.0" prefWidth="212.0" promptText="Number of Stocks">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <ComboBox fx:id="categoryComBox" layoutX="83.0" layoutY="352.0" onAction="#categoryComBoxAction" prefHeight="44.0" prefWidth="212.0" promptText="Category" />
+                        <Label alignment="CENTER" layoutX="143.0" layoutY="27.0" prefHeight="40.0" prefWidth="263.0" text="Add New Menu">
+                           <font>
+                              <Font name="System Bold" size="21.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <HBox fx:id="addNewStaffPane" alignment="CENTER" layoutX="241.0" layoutY="137.0" prefHeight="704.0" prefWidth="1126.4" styleClass="menuUpperPane" stylesheets="@css/menu.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Pane fx:id="addStaffPane" maxHeight="667.0" maxWidth="670.0" prefHeight="667.0" prefWidth="670.0" styleClass="add-new-staff-pane">
+                     <children>
+                        <Label layoutX="27.0" layoutY="21.0" text="Add New Staff">
+                           <font>
+                              <Font name="System Bold Italic" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="95.0" text="Staff ID">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="31.0" layoutY="140.0" prefHeight="25.0" prefWidth="88.0" text="Staff Name">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="182.0" text="Staff Type">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="31.0" layoutY="243.0">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="32.0" layoutY="351.0" text="Date of Birth">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="264.0" text="Gender">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="29.0" layoutY="397.0" text="Phone No">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="33.0" layoutY="444.0" text="e-mail">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="37.0" layoutY="545.0" text="Address">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="34.0" layoutY="305.0" prefHeight="25.0" prefWidth="43.0" text="NRC ">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="staffIdA" layoutX="171.0" layoutY="90.0" prefHeight="35.0" prefWidth="200.0" />
+                        <RadioButton layoutX="190.0" layoutY="268.0" mnemonicParsing="false" onAction="#maleRadioBtnAction" text="Male">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="sex" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton layoutX="276.0" layoutY="268.0" mnemonicParsing="false" onAction="#femaleRadioBtnAction" text="Female" toggleGroup="$sex" />
+                        <DatePicker fx:id="dobA" layoutX="173.0" layoutY="348.0" prefHeight="31.0" prefWidth="199.0" />
+                        <TextField fx:id="mailA" layoutX="173.0" layoutY="439.0" prefHeight="35.0" prefWidth="200.0" />
+                        <TextField fx:id="phA" layoutX="173.0" layoutY="392.0" prefHeight="35.0" prefWidth="200.0" />
+                        <TextField fx:id="pwA" layoutX="171.0" layoutY="220.0" prefHeight="35.0" prefWidth="200.0" />
+                        <TextField fx:id="staffNameA" layoutX="171.0" layoutY="135.0" prefHeight="35.0" prefWidth="200.0" />
+                        <TextArea fx:id="addressA" layoutX="171.0" layoutY="536.0" prefHeight="68.0" prefWidth="205.0" />
+                        <Button layoutX="372.0" layoutY="609.0" mnemonicParsing="false" onAction="#registerNewStaffBtnAction" prefHeight="44.0" prefWidth="115.0" styleClass="addMenubtn" text="Add" />
+                        <Button layoutX="190.0" layoutY="609.0" mnemonicParsing="false" onAction="#cancelAddStaffAction" prefHeight="44.0" prefWidth="115.0" style="-fx-background-color: red; -fx-text-fill: #ffff;" styleClass="addMenubtn" text="Cancel" />
+                        <Pane layoutX="437.0" layoutY="75.0" prefHeight="240.0" prefWidth="179.0" styleClass="addNewMenuPane">
+                           <children>
+                              <Button layoutX="43.0" layoutY="209.0" mnemonicParsing="false" onAction="#importNewStaffImage" prefHeight="28.0" prefWidth="101.0" styleClass="addMenubtn" text="import" />
+                              <ImageView fx:id="newStaffProfile" fitHeight="187.0" fitWidth="165.0" layoutX="7.0" layoutY="14.0" onMouseClicked="#importNewStaffImage" pickOnBounds="true" preserveRatio="true" styleClass="imagePane" />
+                           </children>
+                        </Pane>
+                        <Label layoutX="30.0" layoutY="225.0" prefHeight="25.0" prefWidth="69.0" text="Password">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="nrcA" layoutX="172.0" layoutY="300.0" prefHeight="35.0" prefWidth="200.0" />
+                        <ComboBox fx:id="staffTypeAComBox" layoutX="172.0" layoutY="181.0" onAction="#staffTypeAComBoxAction" prefHeight="29.0" prefWidth="197.0" />
+                        <Label layoutX="33.0" layoutY="490.0" prefHeight="25.0" prefWidth="97.0" text="Start Date">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="startDateForNewStaff" layoutX="174.0" layoutY="487.0" prefHeight="31.0" prefWidth="199.0" />
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+            <HBox fx:id="staffDetailsPane" alignment="CENTER" layoutX="160.0" layoutY="127.0" prefHeight="704.0" prefWidth="1126.4" styleClass="menuUpperPane" stylesheets="@css/menu.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Pane maxHeight="656.0" maxWidth="590.0" prefHeight="656.0" prefWidth="590.0" styleClass="staff-details-pane">
+                     <children>
+                        <Label layoutX="63.0" layoutY="14.0" text="Staff Details">
+                           <font>
+                              <Font name="System Bold Italic" size="27.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="59.0" layoutY="78.0" prefHeight="30.0" prefWidth="100.0" text="ID">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="57.0" layoutY="121.0" prefHeight="30.0" prefWidth="100.0" text="Name">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="59.0" layoutY="162.0" prefHeight="30.0" prefWidth="100.0" text="Staff Type">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="57.0" layoutY="246.0" prefHeight="30.0" prefWidth="100.0" text="Gender">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="57.0" layoutY="289.0" prefHeight="30.0" prefWidth="117.0" text="Date of Birth">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="57.0" layoutY="376.0" prefHeight="30.0" prefWidth="100.0" text="Phone no">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="57.0" layoutY="418.0" prefHeight="30.0" prefWidth="100.0" text="Email">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="59.0" layoutY="333.0" prefHeight="30.0" prefWidth="100.0" text="NRC">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="57.0" layoutY="579.0" prefHeight="30.0" prefWidth="100.0" text="Address">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="staffDetailsIdLbl" layoutX="198.0" layoutY="75.0" prefHeight="35.0" prefWidth="143.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="staffDetailsNameLbl" layoutX="198.0" layoutY="118.0" prefHeight="35.0" prefWidth="157.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="staffDetailsTypeLbl" layoutX="199.0" layoutY="158.0" prefHeight="35.0" prefWidth="155.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="staffDetailsGenderLbl" layoutX="198.0" layoutY="243.0" prefHeight="35.0" prefWidth="150.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="staffDetailsDOBLbl" layoutX="198.0" layoutY="287.0" prefHeight="35.0" prefWidth="153.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="staffDetailsNRCLbl" layoutX="198.0" layoutY="331.0" prefHeight="35.0" prefWidth="157.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="staffDetailsPhLbl" layoutX="195.0" layoutY="374.0" prefHeight="35.0" prefWidth="200.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="staffDetailsEmailLbl" layoutX="195.0" layoutY="415.0" prefHeight="35.0" prefWidth="200.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="staffDetailsAddressLbl" alignment="TOP_LEFT" layoutX="195.0" layoutY="579.0" prefHeight="76.0" prefWidth="219.0" text="Label" wrapText="true">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="418.0" layoutY="579.0" mnemonicParsing="false" onAction="#staffDetailsBackBtnAction" prefHeight="46.0" prefWidth="149.0" styleClass="addMenubtn" text="Back">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                        <Pane layoutX="357.0" layoutY="124.0" prefHeight="224.0" prefWidth="182.0" styleClass="addNewMenuPane">
+                           <children>
+                              <ImageView fx:id="staffDetailsProfile" fitHeight="194.0" fitWidth="173.0" layoutX="4.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                        <Label layoutX="57.0" layoutY="205.0" prefHeight="30.0" prefWidth="100.0" text="Password">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="staffDetailsPWLbl" layoutX="198.0" layoutY="202.0" prefHeight="35.0" prefWidth="149.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="57.0" layoutY="490.0" prefHeight="30.0" prefWidth="100.0" text="Start Date">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="startDateForStaffDetails" layoutX="195.0" layoutY="488.0" prefHeight="35.0" prefWidth="200.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="57.0" layoutY="452.0" prefHeight="30.0" prefWidth="100.0" text="Status">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="staffStatusForStaffDetials" layoutX="195.0" layoutY="450.0" prefHeight="35.0" prefWidth="200.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="57.0" layoutY="530.0" prefHeight="30.0" prefWidth="100.0" text="Quit Date">
+                           <font>
+                              <Font name="System Bold" size="17.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="quitDateForStaffDetails" layoutX="195.0" layoutY="528.0" prefHeight="35.0" prefWidth="200.0" text="Label">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+            <HBox fx:id="staffUpdatePane" alignment="CENTER" layoutX="93.0" layoutY="100.0" prefHeight="704.0" prefWidth="1126.4" styleClass="menuUpperPane" stylesheets="@css/menu.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Pane maxHeight="690.0" maxWidth="699.0" prefHeight="690.0" prefWidth="699.0" styleClass="add-new-staff-pane">
+                     <children>
+                        <Label layoutX="27.0" layoutY="21.0" text="Upadate Staff">
+                           <font>
+                              <Font name="System Bold Italic" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="37.0" layoutY="75.0" text="Staff ID">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="35.0" layoutY="120.0" text="Staff Name">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="35.0" layoutY="162.0" prefHeight="26.0" prefWidth="80.0" text="Staff Type">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="35.0" layoutY="296.0" text="Date of Birth">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="36.0" layoutY="333.0" text="Phone No">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="33.0" layoutY="377.0" prefHeight="26.0" prefWidth="51.0" text="e-mail">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="34.0" layoutY="555.0" text="Address">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="34.0" layoutY="252.0" prefHeight="26.0" prefWidth="48.0" text="NRC ">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="staffIdU" layoutX="171.0" layoutY="70.0" prefHeight="35.0" prefWidth="200.0" />
+                        <TextField fx:id="mailU" layoutX="174.0" layoutY="373.0" prefHeight="35.0" prefWidth="200.0" />
+                        <TextField fx:id="phU" layoutX="174.0" layoutY="328.0" prefHeight="35.0" prefWidth="200.0" />
+                        <TextField fx:id="pwU" layoutX="172.0" layoutY="201.0" prefHeight="35.0" prefWidth="200.0" />
+                        <TextField fx:id="staffNameU" layoutX="172.0" layoutY="115.0" prefHeight="35.0" prefWidth="200.0" />
+                        <TextArea fx:id="addressU" layoutX="175.0" layoutY="537.0" prefHeight="88.0" prefWidth="201.0" />
+                        <Button layoutX="371.0" layoutY="632.0" mnemonicParsing="false" onAction="#updateStaffBtnAction" prefHeight="44.0" prefWidth="115.0" styleClass="addMenubtn" text="Update" />
+                        <Button layoutX="183.0" layoutY="632.0" mnemonicParsing="false" onAction="#cancelStaffUpdateBtnAction" prefHeight="44.0" prefWidth="115.0" style="-fx-background-color: red; -fx-text-fill: #ffff;" styleClass="addMenubtn" text="Cancel" />
+                        <Pane layoutX="440.0" layoutY="102.0" prefHeight="241.0" prefWidth="171.0" styleClass="addNewMenuPane">
+                           <children>
+                              <Button layoutX="35.0" layoutY="199.0" mnemonicParsing="false" onAction="#imageUpdateBtnActction" prefHeight="31.0" prefWidth="101.0" styleClass="addMenubtn" text="import" />
+                              <ImageView fx:id="staffImageU" fitHeight="181.0" fitWidth="149.0" layoutX="11.0" layoutY="14.0" onMouseClicked="#imageUpdateBtnActction" pickOnBounds="true" preserveRatio="true" styleClass="imagePane" />
+                           </children>
+                        </Pane>
+                        <Label layoutX="36.0" layoutY="206.0" prefHeight="26.0" prefWidth="77.0" text="Password">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="nrcU" layoutX="172.0" layoutY="248.0" prefHeight="35.0" prefWidth="200.0" />
+                        <ComboBox fx:id="staffTypeUComBox" layoutX="172.0" layoutY="163.0" onAction="#staffTypeUComBoxAction" prefHeight="25.0" prefWidth="199.0" />
+                        <DatePicker fx:id="dobU" layoutX="173.0" layoutY="292.0" onAction="#dobUAction" prefHeight="29.0" prefWidth="201.0" />
+                        <ComboBox fx:id="statusComBoxForStaffUpdate" layoutX="175.0" layoutY="420.0" onAction="#statusComBoxActionForStaffUpdate" prefHeight="25.0" prefWidth="199.0" />
+                        <DatePicker fx:id="quitDateForStaffUpdate" layoutX="174.0" layoutY="492.0" onAction="#quitDateActionForStaffUpdate" prefHeight="29.0" prefWidth="201.0" />
+                        <DatePicker fx:id="startDateForStaffUpdate" layoutX="174.0" layoutY="455.0" onAction="#startDateActionForStaffUpdate" prefHeight="29.0" prefWidth="201.0" />
+                        <Label layoutX="33.0" layoutY="420.0" prefHeight="26.0" prefWidth="57.0" text="Status">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="35.0" layoutY="493.0" prefHeight="26.0" prefWidth="104.0" text="End Date">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="33.0" layoutY="457.0" prefHeight="26.0" prefWidth="122.0" text="Start Date">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </center>
+   <left>
+      <VBox alignment="CENTER" prefHeight="704.0" prefWidth="244.0" spacing="10.0" styleClass="leftVbox" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="643.0" prefWidth="255.0" spacing="5.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@photo/LogoBlack.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="staffNameLbl" alignment="CENTER" prefHeight="36.0" prefWidth="210.0">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#startServer" prefHeight="50.0" prefWidth="240.0" styleClass="btn" text="Start Server">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="connectToServerBtn" mnemonicParsing="false" onAction="#connectToServer" prefHeight="54.0" prefWidth="230.0" styleClass="btn" text="Connect To Server" />
+                  <Button mnemonicParsing="false" onAction="#staffManagementBtnAction" prefHeight="50.0" prefWidth="240.0" styleClass="btn" text="Staff Management">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#addMenu" prefHeight="50.0" prefWidth="240.0" styleClass="btn" text="Add Menu">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="dishesBtn" mnemonicParsing="false" onAction="#dishesBtnAction" prefHeight="50.0" prefWidth="240.0" styleClass="btn" text="Main Dishes">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="coolDrinkBtn" mnemonicParsing="false" onAction="#coolDrinksAction" prefHeight="50.0" prefWidth="240.0" styleClass="btn" text="Drinks">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#soupBtnAction" prefHeight="50.0" prefWidth="240.0" styleClass="btn" text="Soup">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#starterBtnAction" prefHeight="50.0" prefWidth="240.0" styleClass="btn" text="Starters">
+                     <font>
+                        <Font size="19.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            <Button mnemonicParsing="false" onAction="#logout" prefHeight="42.0" prefWidth="169.0" styleClass="logout-btn" text="Log Out">
+               <font>
+                  <Font size="19.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </left>
+</BorderPane>

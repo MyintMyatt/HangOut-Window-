@@ -1,0 +1,45 @@
+.btn{
+    -fx-background-color: #74ffc5;
+}
+.btn:hover{
+    -fx-background-color: white;
+}
+.indicator{
+    -fx-progress-color: #74ffc5;
+}
+.tbl{
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.2), 10,0,0,10);
+    -fx-background-radius: 10px;
+    -fx-background-color: #fff;
+}
+.logout-btn{
+    -fx-effect : dropshadow(three-pass-box,rgba(0,0,0,0.1),10.0,0,0,10.0);
+    -fx-background-radius:10px;
+    -fx-background-color : #fff;
+    -fx-text-fill : red;
+}
+.logout-btn:hover{
+    -fx-background-color: rgba(0,0,0,0.03);
+}
+
+.comfirm-booking-pane{
+    -fx-background-color: rgba(0,0,0,0.2);
+}
+.comfirm-btn{
+    -fx-background-color : #00df82;
+    -fx-effect : dropshadow(three-pass-box,rgba(0,0,0,0.1),10.0,0,0,10.0);
+    -fx-background-radius:15px;
+    -fx-font-size : 18px;
+}
+.confirm-btn:hover{
+    -fx-background-color : #30b37c;
+}
+.cancel-btn{
+    -fx-background-color : #fff;
+    -fx-effect : dropshadow(three-pass-box,rgba(0,0,0,0.1),10.0,0,0,10.0);
+    -fx-background-radius:15px;
+    -fx-font-size : 18px;
+}
+.cancel-btn:hover{
+    -fx-background-color : rgba(0,0,0,0.03);
+}

@@ -1,0 +1,22 @@
+.addMenubtn{
+    -fx-background-color : #00df82;
+    -fx-background-radius:15px;
+    -fx-effect : dropshadow(three-pass-box,rgba(0,0,0,0.1),8.0,0,0,8.0);
+}
+.addMenubtn:hover{
+    -fx-background-color:#30b37c;
+}
+
+.menuUpperPane{
+    -fx-background-color:rgba(0,0,0,0.2);
+}
+.addNewMenuPane{
+    -fx-background-color : #fff;
+    -fx-background-radius : 30px;
+    -fx-effect : dropshadow(three-pass-box,rgba(0,0,0,0.3),8.0,0,0,8.0);
+}
+.imagePane{
+    -fx-background-color:#fff;
+    -fx-background-radius:30px;
+    -fx-effect : dropshadow(three-pass-box,rgba(0,0,0,0.4),10.0,0,0,8.0);
+}

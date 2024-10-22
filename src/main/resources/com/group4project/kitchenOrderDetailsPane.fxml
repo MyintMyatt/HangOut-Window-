@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane prefHeight="53.0" prefWidth="289.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group4project.KitchenOrderDetailsPaneController">
+   <children>
+      <Label fx:id="menuLbl" layoutX="14.0" layoutY="8.0" prefHeight="37.0" prefWidth="165.0" text="Winetage">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="qtyLbl" layoutX="212.0" layoutY="8.0" prefHeight="37.0" prefWidth="42.0" text="200">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="checkBox" layoutX="254.0" layoutY="18.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="21.0" />
+   </children>
+</Pane>
