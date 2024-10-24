@@ -6,6 +6,7 @@
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="633"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="353"/>
 	<parameter name="orderNo" class="java.lang.Integer"/>
+	<parameter name="photo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
     o.order_no,
@@ -29,13 +30,18 @@ WHERE o.order_no =   $P{orderNo}]]>
 	<field name="quantity" class="java.lang.String"/>
 	<field name="total_price" class="java.lang.String"/>
 	<field name="total_amount" class="java.lang.String"/>
+
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="220" splitType="Stretch">
+			<image>
+				<reportElement x="220" y="0" width="120" height="114" uuid="5d82172b-2ccf-4eab-8be2-647fb0fd3db3"/>
+				<imageExpression><![CDATA[$P{photo}]]></imageExpression>
+			</image>
 			<staticText>
-				<reportElement x="77" y="90" width="400" height="70" uuid="d8f5421d-86b0-44c2-a437-8e06b212fcf0"/>
+				<reportElement x="77" y="100" width="400" height="60" uuid="d8f5421d-86b0-44c2-a437-8e06b212fcf0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="15" isBold="true" isItalic="true"/>
 				</textElement>
@@ -84,13 +90,6 @@ Industrial Rd, Yangon 11201]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fk_staff_id}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="170" y="10" width="220" height="66" uuid="6e0ecb41-4a35-4029-b225-437193b757dc"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="27" isBold="true"/>
-				</textElement>
-				<text><![CDATA[THE HANG OUT]]></text>
-			</staticText>
 		</band>
 	</title>
 	<pageHeader>
@@ -137,7 +136,7 @@ Industrial Rd, Yangon 11201]]></text>
 	<detail>
 		<band height="42" splitType="Stretch">
 			<textField>
-				<reportElement x="240" y="0" width="135" height="20" uuid="6a4af25b-3718-4646-a25e-20d04b332f0d">
+				<reportElement x="190" y="0" width="185" height="20" uuid="6a4af25b-3718-4646-a25e-20d04b332f0d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3ad3777f-3845-4358-adc7-6973ab2224f9"/>
 				</reportElement>
 				<textElement>
@@ -146,7 +145,7 @@ Industrial Rd, Yangon 11201]]></text>
 				<textFieldExpression><![CDATA[$F{menu_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="0" width="60" height="20" uuid="85896249-fce9-4b71-85be-c74a45c82134">
+				<reportElement x="80" y="0" width="100" height="20" uuid="85896249-fce9-4b71-85be-c74a45c82134">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="68a62234-9e01-4231-9cef-bf3df0b196eb"/>
 				</reportElement>
 				<textElement>
@@ -155,7 +154,7 @@ Industrial Rd, Yangon 11201]]></text>
 				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="400" y="0" width="90" height="20" uuid="1b48757b-f3c9-4a10-82b7-a6119ce78065">
+				<reportElement x="380" y="0" width="110" height="20" uuid="1b48757b-f3c9-4a10-82b7-a6119ce78065">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="851c9485-960d-4c2e-a105-700c84ffcd27"/>
 				</reportElement>
 				<textElement>
@@ -174,7 +173,7 @@ Industrial Rd, Yangon 11201]]></text>
 	<summary>
 		<band height="94" splitType="Stretch">
 			<staticText>
-				<reportElement x="270" y="10" width="110" height="30" uuid="c9530862-5986-4f1e-89c9-594f2828ffd2"/>
+				<reportElement x="250" y="10" width="110" height="30" uuid="c9530862-5986-4f1e-89c9-594f2828ffd2"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -200,7 +199,7 @@ Industrial Rd, Yangon 11201]]></text>
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="400" y="10" width="80" height="34" uuid="ce5ff656-4ca0-4a34-8cda-0179bfb62f75"/>
+				<reportElement x="357" y="10" width="123" height="34" uuid="ce5ff656-4ca0-4a34-8cda-0179bfb62f75"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
