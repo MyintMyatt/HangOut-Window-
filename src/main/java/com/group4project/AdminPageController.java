@@ -409,7 +409,7 @@ public class AdminPageController implements Initializable {
     @FXML
     void importNewStaffImage(javafx.scene.input.MouseEvent event) {
         File imagePath = fileChooser.showOpenDialog(new Stage());
-        newStaffProfile.setImage(new Image("file://" + imagePath));
+        newStaffProfile.setImage(new Image("file:/" + imagePath));
         s_image = imagePath.getPath();
     }
 
@@ -621,7 +621,7 @@ public class AdminPageController implements Initializable {
     @FXML
     void imageUpdateBtnActction(Event event) {
         File imagePath = fileChooser.showOpenDialog(new Stage());
-        staffImageU.setImage(new Image("file://" + imagePath));
+        staffImageU.setImage(new Image("file:/" + imagePath));
         updatePhoto = imagePath.getPath();
     }
 
@@ -771,7 +771,7 @@ public class AdminPageController implements Initializable {
     public void importNewMenuImage(Event event) {
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
-            menuImage.setImage(new Image("file://" + file.getPath()));
+            menuImage.setImage(new Image("file:/" + file.getPath()));
             m_image = file.getPath();
         }
     }
@@ -882,7 +882,7 @@ public class AdminPageController implements Initializable {
     public void importUpdateMenuImage(Event event) {
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
-            um_image.setImage(new Image("file://" + file.getPath()));
+            um_image.setImage(new Image("file:/" + file.getPath()));
             newU_Photo = file.getPath();
         }
     }
