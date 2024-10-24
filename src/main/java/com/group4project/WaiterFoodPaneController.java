@@ -79,7 +79,6 @@ public class WaiterFoodPaneController implements Initializable {
 //            }
 //        }
         addNewMenuToListView();
-
     }
 
     private void addNewMenuToListView() {

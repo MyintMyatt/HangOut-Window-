@@ -6,7 +6,7 @@
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="633"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="353"/>
 	<parameter name="orderNo" class="java.lang.Integer"/>
-	<parameter name="photo" class="java.lang.String"/>
+<!--	<parameter name="photo" class="java.lang.String"/>-->
 	<queryString>
 		<![CDATA[SELECT
     o.order_no,
@@ -36,10 +36,10 @@ WHERE o.order_no =   $P{orderNo}]]>
 	</background>
 	<title>
 		<band height="220" splitType="Stretch">
-			<image>
-				<reportElement x="220" y="0" width="120" height="114" uuid="5d82172b-2ccf-4eab-8be2-647fb0fd3db3"/>
-				<imageExpression><![CDATA[$P{photo}]]></imageExpression>
-			</image>
+<!--			<image>-->
+<!--				<reportElement x="220" y="0" width="120" height="114" uuid="5d82172b-2ccf-4eab-8be2-647fb0fd3db3"/>-->
+<!--				<imageExpression><![CDATA[$P{photo}]]></imageExpression>-->
+<!--			</image>-->
 			<staticText>
 				<reportElement x="77" y="100" width="400" height="60" uuid="d8f5421d-86b0-44c2-a437-8e06b212fcf0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
