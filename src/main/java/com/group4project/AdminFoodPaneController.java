@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class A_foodPaneController implements Initializable {
+public class AdminFoodPaneController implements Initializable {
     @FXML
     private Label foodNamelb;
 

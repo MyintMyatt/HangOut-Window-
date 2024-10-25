@@ -1,6 +1,7 @@
 package com.group4project;
 
 import javafx.application.Platform;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -19,8 +20,19 @@ import java.util.*;
 @ClientEndpoint
 public class AdminWebSocketClient {
 
+    private static Session session;
+
+    public static Session getSession() {
+        return session;
+    }
+
+    public static void setSession() {
+        AdminWebSocketClient.session = null;
+    }
+
     @OnOpen
-    public void onOpen(Session session) {
+    public void onOpen(Session s) {
+        session = s;
         System.out.println("admin connected to server : " + session.getId());
     }
 
@@ -33,7 +45,7 @@ public class AdminWebSocketClient {
             List<AllMenu> list = AppData.getObj().getMenus();
             AdminPageController obj = new AdminPageController();
             GridPane staffGP = AppData.getObj().getStaffManagementGP();
-            /*for stock*/
+            /*for stock update*/
             if (object instanceof Map<?, ?>) {
                 try {
                     Map<Integer, Integer> stockMap = (Map<Integer, Integer>) object;
@@ -93,7 +105,7 @@ public class AdminWebSocketClient {
             if (object instanceof AllMenu) {
                 try {
                     AllMenu menu = (AllMenu) object;
-                    AppData.getObj().getMenus().add(menu);
+                    list.add(menu);
                     Platform.runLater(()-> {
                         obj.refreshPage(AppData.getObj().getGridPaneListAdmin(), AppData.getObj().getSearch_tf(), AppData.getObj().getSelect_pane());
                     });
@@ -109,17 +121,16 @@ public class AdminWebSocketClient {
                     Iterator<Integer> iterator = keySet.iterator();
                     int id = iterator.next();
                     AllMenu menuObj = map.get(id);
-                    List<AllMenu> allMenuList = AppData.getObj().getMenus();
-                    for (int i = 0; i < allMenuList.size(); i++) {
-                        if (id == allMenuList.get(i).getMenu_id()) {
-                            allMenuList.get(i).setStocks(menuObj.getStocks());
-                            allMenuList.get(i).setPrice(menuObj.getPrice());
-                            allMenuList.get(i).setPhoto(menuObj.getPhoto());
-                            obj.refreshPage(AppData.getObj().getGridPaneListAdmin(), AppData.getObj().getSearch_tf(), AppData.getObj().getSelect_pane());
+                    for (int i = 0; i < list.size(); i++) {
+                        if (id == list.get(i).getMenu_id()) {
+                            list.get(i).setStocks(menuObj.getStocks());
+                            list.get(i).setPrice(menuObj.getPrice());
+                            list.get(i).setPhoto(menuObj.getPhoto());
                             break;
                         }
                     }
                     Platform.runLater(() -> {
+                        obj.refreshPage(AppData.getObj().getGridPaneListAdmin(), AppData.getObj().getSearch_tf(), AppData.getObj().getSelect_pane());
                         AppData.getObj().getU_image().setImage(new Image(new ByteArrayInputStream(menuObj.getPhoto())));
                         AppData.getObj().getCurrent_stock_tf().setText("Current Stocks : " + menuObj.getStocks());
                         AppData.getObj().getPrice_tf().setText(String.valueOf(menuObj.getPrice()));
@@ -225,6 +236,28 @@ public class AdminWebSocketClient {
     @OnMessage
     public void onMessage(String message) {
         try {
+            AdminPageController obj = new AdminPageController();
+            if (message.equals("server was shut down")) {
+                if (AppData.getObj().getServer() != null) {
+                    Platform.runLater(() -> {
+                        obj.showAlertServerConnectionFailed();
+                    });
+                    System.exit(0);
+                } else {
+                    Platform.runLater(() -> {
+                        obj.showAlertServerConnectionFailed();
+                        Button btn = AppData.getObj().getConnectToServerBtn();
+                        btn.setText("Connect to Server");
+                        btn.setStyle("-fx-text-fill: #000");
+                        session = null; /*for reconnecting to server*/
+                    });
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        /*for staff delete*/
+        try {
             List<Staff> staffList = AppData.getObj().getStaffList();
             int i = 0;
             boolean flag = true;
@@ -243,7 +276,23 @@ public class AdminWebSocketClient {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-
+        /*for menu delete*/
+        try {
+            List<AllMenu> list = AppData.getObj().getMenus();
+            int menuId = Integer.parseInt(message);
+            for (int i = 0; i < list.size(); i++) {
+                if (menuId == list.get(i).getMenu_id()) {
+                    list.remove(i);
+                    break;
+                }
+            }
+            Platform.runLater(() -> {
+                AdminPageController obj = new AdminPageController();
+                obj.refreshPage(AppData.getObj().getGridPaneListAdmin(), AppData.getObj().getSearch_tf(), AppData.getObj().getSelect_pane());
+            });
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     @OnClose
@@ -251,4 +300,13 @@ public class AdminWebSocketClient {
         System.out.println("admin disconnected from server : " + session.getId());
     }
 
+    public static void disconnect() {
+        try {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

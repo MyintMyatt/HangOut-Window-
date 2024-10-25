@@ -14,6 +14,8 @@ import javax.websocket.WebSocketContainer;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class KitchenPageController implements Initializable {
@@ -30,6 +32,7 @@ public class KitchenPageController implements Initializable {
     void logOut(ActionEvent event) {
         Optional<ButtonType> result = AlertClass.askConfirmAlert("Are you sure ????");
         if (result.isPresent() && result.get() == ButtonType.OK) {
+            KitchenWebSocketClient.disconnect();
             ChangePage.changePage(event, "loginPage.fxml");
         }
     }
@@ -134,5 +137,9 @@ public class KitchenPageController implements Initializable {
             });
 
         }
+    }
+    public void showAlertServerConnectionFailed() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+        AlertClass.errorAlert("Server was shut down on " + formatter.format(LocalDateTime.now()));
     }
 }

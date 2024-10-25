@@ -23,7 +23,7 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
-public class HomePageController implements Initializable {
+public class WaiterPageController implements Initializable {
 
     private WebSocketClient webSocketClient;
 
@@ -100,9 +100,9 @@ public class HomePageController implements Initializable {
                 if (menus.get(i).getMenu_name().toLowerCase().contains(keyword)) {
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("foodPane.fxml"));
+                        fxmlLoader.setLocation(getClass().getResource("WaiterFoodPane.fxml"));
                         Pane pane = fxmlLoader.load();
-                        FoodPaneController controller = fxmlLoader.getController();
+                        WaiterFoodPaneController controller = fxmlLoader.getController();
                         controller.setValue(menus.get(i));
 
                         if (col == 4) {
@@ -203,6 +203,9 @@ public class HomePageController implements Initializable {
         Optional<ButtonType> result = AlertClass.askConfirmAlert("Are you sure ????");
         if (result.isPresent() && result.get() == ButtonType.OK) {
             ChangePage.changePage(event, "loginPage.fxml");
+
+            WaiterWebSocketClient.disconnect();/*1*/
+            WaiterWebSocketClient.setSession();/*2*/
         }
     }
 
@@ -217,10 +220,10 @@ public class HomePageController implements Initializable {
                 if (category_id.equals(menus.get(i).getCategory_id())) {
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("foodPane.fxml"));
+                        fxmlLoader.setLocation(getClass().getResource("WaiterFoodPane.fxml"));
                         Pane pane = fxmlLoader.load();
 
-                        FoodPaneController controller = fxmlLoader.getController();
+                        WaiterFoodPaneController controller = fxmlLoader.getController();
                         controller.setValue(menus.get(i));
 
                         if (col == 4) {
@@ -303,7 +306,7 @@ public class HomePageController implements Initializable {
     private int row = 0;//for new order items
     private Map<Integer, Integer> orderMap;
     private Map<Integer, Integer> rowMap;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss.SSS");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
 
     @FXML
     void orderBtnAction(ActionEvent event) {
@@ -314,7 +317,9 @@ public class HomePageController implements Initializable {
             tableNo = Integer.parseInt(tblNo.trim());
 
             orderMap = AppData.getObj().getOrderMap();/*to store orderNo with table number*/
+            /*orderMap <Table Number, Order No>  key value is Table Number*/
             rowMap = AppData.getObj().getRowMap();/*for listView row (for new order item)*/
+            /*rowMap<Order No, Row Number> key value is Order No*/
 
             if (listView.getItems().size() > 0) {
                 orderId = (orderMap.get(tableNo) != null) ? orderMap.get(tableNo) : -1;
@@ -322,10 +327,10 @@ public class HomePageController implements Initializable {
                     orderId = Database.addNewOrder(con, staffId, tableNo);
                     orderMap.put(tableNo, orderId);
                     AppData.getObj().setOrderMap(orderMap);
-
                 }
+                /*for listview row*/
                 row = (rowMap.get(orderId) != null) ? rowMap.get(orderId) : 0;
-                List<OrderDetails> orderDetailsList = new ArrayList<>();
+                List<OrderDetails> orderDetailsList = new ArrayList<>();/*storing data in db*/
                 int listViewSize = listView.getItems().size();
 
                 /*storing data for kitchen order*/
@@ -351,12 +356,6 @@ public class HomePageController implements Initializable {
                         if (menus.get(j).getMenu_name().equals(menuName)) {
                             menuId = menus.get(j).getMenu_id();/*searching menu id by menu name*/
 
-                            /*update menu stocks in local list<AllMenu> object*/
-                            int oldStock = menus.get(j).getStocks();
-                            menus.get(j).setStocks(oldStock - qty);
-                            AppData.getObj().setMenus(menus);
-                            refreshUI();
-
                             /*update menu stocks for admin*/
                             Set<Integer> keySet = stockMap.keySet();
                             Iterator<Integer> iterator = keySet.iterator();
@@ -377,16 +376,20 @@ public class HomePageController implements Initializable {
                 }
                 rowMap.put(orderId, row);
 
-                LocalDateTime now = LocalDateTime.now();
-                kitchenOrderDetailsMap.put("orderId : " + orderId, new KitchenOrderDetails(orderItemsList, "waiting", tableNo, formatter.format(now)));// key value is for example (orderId : 2) for searching value
 
                 /*to send update stocks to admin*/
                 byte[] stockBytes = changeObjToByte(stockMap);
                 webSocketClient.sendUpdateStocksToAdmin(ByteBuffer.wrap(stockBytes));
 
-                /*to send order to kitchen*/
-                byte[] orderBytes = changeObjToByte(kitchenOrderDetailsMap);
-                webSocketClient.sendOrderToKitchen(ByteBuffer.wrap(orderBytes));
+                if (orderItemsList.size() > 0) {/*to avoid null value order to kitchen*/
+                    LocalDateTime now = LocalDateTime.now();
+                    kitchenOrderDetailsMap.put("orderId : " + orderId, new KitchenOrderDetails(orderItemsList, "waiting", tableNo, formatter.format(now)));
+
+                    /*to send order to kitchen*/
+                    byte[] orderBytes = changeObjToByte(kitchenOrderDetailsMap);
+                    webSocketClient.sendOrderToKitchen(ByteBuffer.wrap(orderBytes));
+                }
+
 
                 /*for storing orders in database*/
                 for (int i = 0; i < orderDetailsList.size(); i++) {
@@ -414,7 +417,6 @@ public class HomePageController implements Initializable {
             orderMap = AppData.getObj().getOrderMap();
             rowMap = AppData.getObj().getRowMap();
             orderId = orderMap.get(tableNo);
-            //  InputStream path = HomePageController.class.getClassLoader().getResourceAsStream("com/group4project/hangoutReceipt.jrxml");
             InputStream path = getClass().getResourceAsStream("hangoutReceipt.jrxml");
             // JasperReport jasperReport = JasperCompileManager.compileReport(path);
 
@@ -426,9 +428,11 @@ public class HomePageController implements Initializable {
 
             Map<String, Object> data = new HashMap<>();
             data.put("orderNo", orderId);
-            data.put("photo", "C:\\Users\\USER\\IdeaProjects\\HangOutGP4\\src\\main\\resources\\com\\group4project\\logo.png");
+            data.put("photo", getClass().getResource("logo.png").getPath());
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, data, con);
             JasperViewer.viewReport(jasperPrint, false);
+
+            listView.getItems().clear();
 
             /*Change row and orderId*/
             rowMap.remove(orderId);
@@ -442,6 +446,10 @@ public class HomePageController implements Initializable {
             e.printStackTrace();
 //            AlertClass.errorAlert("Please Order First !!!");
         }
+    }
+
+    public void showAlertServerConnectionFailed() {
+        AlertClass.errorAlert("Server was shut down on " + formatter.format(LocalDateTime.now()));
     }
 
     /*change map object to buffer byte*/

@@ -1,5 +1,6 @@
 package com.group4project;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class FoodPaneController implements Initializable {
+public class WaiterFoodPaneController implements Initializable {
     @FXML
     private Label foodName;
 
@@ -38,11 +39,51 @@ public class FoodPaneController implements Initializable {
 
     Button plus;
     Button minus;
-    Label name, qtyLabel, priceLabel;
+    Label name, priceLabel;
 
 
     @FXML
     void addBtnAction(ActionEvent event) {
+//        ObservableList<HBox> observableList = listView.getItems();
+//        if (observableList.size() == 0) {
+//            addNewMenuToListView();
+//        } else {
+//            boolean flag = true;
+//            for (int i = 0; i < observableList.size(); i++) {
+//                HBox hBox = observableList.get(i);
+//                Label menuName = (Label) hBox.getChildren().get(0);
+//                if (menuName.getText().trim().equals(foodName.getText().trim())) {
+//                    System.out.println(menuName.getText().trim() + " < > " + foodName.getText().trim());
+//                    //System.out.println("Equal");
+//                    flag = false;
+//                    Label qtyLabel = (Label) hBox.getChildren().get(2);
+//                    int qty = Integer.parseInt(qtyLabel.getText().trim());
+//                    qtyLabel.setText(String.valueOf(qty + spinnerValue));
+//                    Label totalPriceLbel = (Label) hBox.getChildren().get(4);
+//                    String[] totalPriceArr = totalPriceLbel.getText().split("Ks");
+//                    double totalPrice = Double.parseDouble(totalPriceArr[0]);
+//                    String[] unitPriceArr = price.getText().split("Ks");
+//                    Double unitPrice = Double.valueOf(unitPriceArr[0]);
+//                    totalPrice += spinnerValue * unitPrice;
+//                    totalPriceLbel.setText(totalPrice + "Ks");
+//                    String[] totalAmountArr = totalAmount.getText().split("Ks");
+//                    Double total = Double.parseDouble(totalAmountArr[0]);
+//                    total += spinnerValue * unitPrice;
+//                    totalAmount.setText(total+"Ks");
+//                }else
+//                    System.out.println("not equal");
+//            }
+//            if (flag) {
+//                System.out.println("Add new one");
+//                addNewMenuToListView();
+//            }
+//        }
+        addNewMenuToListView();
+
+    }
+
+    private void addNewMenuToListView() {
+        Label qtyLabel = new Label(String.valueOf(spinnerValue));
         if (spinnerValue > 0) {
             plus = new Button("+");
             minus = new Button("-");
@@ -53,7 +94,7 @@ public class FoodPaneController implements Initializable {
             AtomicReference<Double> unitPrice = new AtomicReference<>((double) 0);
 
             plus.setOnAction(event1 -> {
-                calculateUnitPrice(unitPrice);
+                calculateUnitPrice(unitPrice, qtyLabel);
                 List<AllMenu> allMenuList = AppData.getObj().getMenus();
 
                 int count = Integer.parseInt(qtyLabel.getText());
@@ -76,7 +117,7 @@ public class FoodPaneController implements Initializable {
 
             });
             minus.setOnAction(e -> {
-                calculateUnitPrice(unitPrice);
+                calculateUnitPrice(unitPrice, qtyLabel);
 
                 int count = Integer.parseInt(qtyLabel.getText());
                 if (count > 1) {
@@ -91,7 +132,7 @@ public class FoodPaneController implements Initializable {
             });
 
             name = new Label(foodName.getText());
-            qtyLabel = new Label(String.valueOf(spinnerValue));
+            //qtyLabel = new Label(String.valueOf(spinnerValue));
 
             String arr[] = price.getText().split("K");
             double unitPrice0 = Double.parseDouble(arr[0]);
@@ -106,7 +147,6 @@ public class FoodPaneController implements Initializable {
             priceLabel.setFont(Font.font(15));
             priceLabel.setAlignment(Pos.CENTER);
 
-
             HBox hBox = new HBox(name, plus, qtyLabel, minus, priceLabel);
 
             listView.getItems().add(hBox);
@@ -118,7 +158,7 @@ public class FoodPaneController implements Initializable {
         }
     }
 
-    private void calculateUnitPrice(AtomicReference<Double> unitPrice) {
+    private void calculateUnitPrice(AtomicReference<Double> unitPrice, Label qtyLabel) {
         if (unitPrice.get() == 0) {
             int qty = Integer.parseInt(qtyLabel.getText());
             String array[] = priceLabel.getText().split("Ks");

@@ -15,14 +15,37 @@ import java.util.Set;
 
 @ClientEndpoint
 public class WaiterWebSocketClient {
+    private static Session session;
+
+    public static Session getSession() {
+        return session;
+    }
+
+    public static void setSession() {
+        session = null;
+    }
 
     @OnOpen
-    public void onOpen(Session session) {
+    public void onOpen(Session s) {
+        session = s;
         System.out.println("Waiter connected to server : " + session.getId());
     }
 
+    /*for menu delete from admin*/
     @OnMessage
     public void onMessage(String menuId) {
+        try {
+            if (menuId.toLowerCase().equals("server was shut down")) {
+                Platform.runLater(() -> {
+                    WaiterPageController obj = new WaiterPageController();
+                    obj.showAlertServerConnectionFailed();
+//                    TablePageController tblObj = new TablePageController();
+//                    tblObj.showAlertServerConnectionFailed();
+                });
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
         try {
             if (menuId instanceof String) {
                 try {
@@ -51,6 +74,7 @@ public class WaiterWebSocketClient {
             ByteArrayInputStream in = new ByteArrayInputStream(message.array());
             ObjectInputStream objIn = new ObjectInputStream(in);
             Object object = objIn.readObject();
+            List<AllMenu> allMenuList = AppData.getObj().getMenus();
             /*for new menu*/
             if (object instanceof AllMenu) {
                 AllMenu newMenu = (AllMenu) object;
@@ -68,7 +92,6 @@ public class WaiterWebSocketClient {
                     Iterator<Integer> iterator = keySet.iterator();
                     int id = iterator.next();
                     AllMenu menuObj = map.get(id);
-                    List<AllMenu> allMenuList = AppData.getObj().getMenus();
                     for (int i = 0; i < allMenuList.size(); i++) {
                         if (id == allMenuList.get(i).getMenu_id()) {
                             allMenuList.get(i).setStocks(menuObj.getStocks());
@@ -84,6 +107,29 @@ public class WaiterWebSocketClient {
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
+            /*for update stocks*/
+            try {
+                if (object instanceof Map<?, ?>) {
+                    Map<Integer, Integer> stockMap = (Map<Integer, Integer>) object;
+                    Set<Integer> keySet = stockMap.keySet();
+                    Iterator<Integer> iterator = keySet.iterator();
+                    while (iterator.hasNext()) {/*for multiple menu*/
+                        int menuId = iterator.next();
+                        for (int i = 0; i < allMenuList.size(); i++) {
+                            if (menuId == allMenuList.get(i).getMenu_id()) {
+                                int oldStock = allMenuList.get(i).getStocks();
+                                allMenuList.get(i).setStocks(oldStock - stockMap.get(menuId));
+                                break;
+                            }
+                        }
+                    }
+                }
+                Platform.runLater(() ->{
+                    updateUI();
+                });
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println(e.getMessage());
         }
@@ -94,11 +140,22 @@ public class WaiterWebSocketClient {
         System.out.println("Waiter disconnected from server : " + session.getId());
     }
 
+    public static void disconnect() {
+        try {
+            if (session != null && session.isOpen()) {
+                session.close();
+                System.out.println("Waiter disconnect from server!!!!");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void updateUI() {
         Label categoryLabel = AppData.getObj().getWaiterCategoryLabel();
         String category = categoryLabel.getText();
         List<GridPane> gridPaneList = AppData.getObj().getGridPaneListWaiter();
-        HomePageController obj = new HomePageController();
+        WaiterPageController obj = new WaiterPageController();
         switch (category.toLowerCase()) {
             case "main dishes":
                 obj.setMenuPaneNewOne(gridPaneList.get(0), "1");

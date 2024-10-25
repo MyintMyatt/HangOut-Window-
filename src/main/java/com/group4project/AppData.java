@@ -6,10 +6,44 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.glassfish.tyrus.server.Server;
+
+import javax.websocket.Session;
 import java.sql.Connection;
 import java.util.*;
 
 public class AppData {
+
+    /*for server connection*/
+    private Server server;
+
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
+    }
+
+    private Button serverBtn;
+
+    public Button getServerBtn() {
+        return serverBtn;
+    }
+
+    public void setServerBtn(Button serverBtn) {
+        this.serverBtn = serverBtn;
+    }
+
+    private Button connectToServerBtn;
+
+    public Button getConnectToServerBtn() {
+        return connectToServerBtn;
+    }
+
+    public void setConnectToServerBtn(Button connectToServerBtn) {
+        this.connectToServerBtn = connectToServerBtn;
+    }
 
     private String serverIpAddress;
 
@@ -68,6 +102,7 @@ public class AppData {
     public void setCurrentId(String currentId) {
         this.currentId = currentId;
     }
+
     /*for staff details*/
     private Label idLbl;
     private Label nameLbl;

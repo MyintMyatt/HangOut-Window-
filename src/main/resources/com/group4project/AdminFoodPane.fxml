@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane minWidth="186.0" prefHeight="255.0" prefWidth="186.0" styleClass="foodPhoto-pane" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group4project.A_foodPaneController">
+<Pane minWidth="186.0" prefHeight="255.0" prefWidth="186.0" styleClass="foodPhoto-pane" stylesheets="@css/home.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group4project.AdminFoodPaneController">
    <children>
       <ImageView fx:id="image" fitHeight="142.0" fitWidth="128.0" layoutX="23.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="foodNamelb" layoutX="14.0" layoutY="155.0" prefHeight="51.0" prefWidth="89.0" wrapText="true">

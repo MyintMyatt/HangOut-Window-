@@ -14,9 +14,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import javax.websocket.Session;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class TablePageController implements Initializable {
@@ -40,9 +43,8 @@ public class TablePageController implements Initializable {
 
     private Timer timer;
 
-    private  Connection con;
+    private Connection con;
 
-    private WebSocketClient webSocketClient;
 
     private String serverIpAddress;
 
@@ -55,17 +57,17 @@ public class TablePageController implements Initializable {
             if (tableList.get(i).getTableNumber() == num && tableList.get(i).getBooking_name().equals(name)) {
                 String pw = passwordTF.getText();
                 if (tableList.get(i).getBooking_pass().equals(pw)) {
-                    if (webSocketClient != null) {
-                        ChangePage.changePage(event, "homePage.fxml");
+                    if (WaiterWebSocketClient.getSession() != null) {
+                        ChangePage.changePage(event, "waiterPage.fxml");
                         Label label = AppData.getObj().getS_Page_tblNumber();
                         label.setText("Table - " + num);
                         TableController obj = new TableController();
                         obj.changeTableStatus(tableList, num);
                         break;
-                    }else {
+                    } else {
                         AlertClass.errorAlert("Start Server First!!");
                     }
-                }else {
+                } else {
                     AlertClass.errorAlert("Invalid Password");
                     break;
                 }
@@ -84,22 +86,21 @@ public class TablePageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
         con = AppData.getObj().getConnection();
 
-        webSocketClient = AppData.getObj().getWebSocketClient();
-        if (webSocketClient == null) {
+        if (WaiterWebSocketClient.getSession() == null) {
             con = AppData.getObj().getConnection();
             /*connect to server*/
             serverIpAddress = Database.getServerIpAddress(con);
             String uri = "ws://" + serverIpAddress + ":8080/ws/hangOutServer";
-            webSocketClient = new WebSocketClient(uri);
+            WebSocketClient webSocketClient = new WebSocketClient(uri);
             AppData.getObj().setWebSocketClient(webSocketClient);
         }
         AppData.getObj().setConfirmBookingPaneElements(confirmBookingPane, customerName, tblNumber);
         tableList = AppData.getObj().getTableList();
         loadingTable();
+
+        /*checking table status in db*/
         new Thread(() -> {
             timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
@@ -109,12 +110,12 @@ public class TablePageController implements Initializable {
                     if (!tableList.equals(tables)) {
                         AppData.getObj().setTableList(tables);
                         tableList = AppData.getObj().getTableList();
-                        Platform.runLater(()->{
+                        Platform.runLater(() -> {
                             loadingTable();
                         });
                     }
                 }
-            },0, 1000);// 1s
+            }, 0, 1000);// 1s
         }).start();
         setupCloseRequestHandler(AppData.getObj().getPrimaryStage());
     }
@@ -158,7 +159,14 @@ public class TablePageController implements Initializable {
     public void logout(ActionEvent event) {
         Optional<ButtonType> result = AlertClass.askConfirmAlert("Are you sure ????");
         if (result.isPresent() && result.get() == ButtonType.OK) {
+
+            WaiterWebSocketClient.disconnect();/*1*/
+            WaiterWebSocketClient.setSession();/*2*/
             ChangePage.changePage(event, "loginPage.fxml");
         }
+    }
+    public void showAlertServerConnectionFailed() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+        AlertClass.errorAlert("Server was shut down on " + formatter.format(LocalDateTime.now()));
     }
 }

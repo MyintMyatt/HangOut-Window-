@@ -14,22 +14,27 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.w3c.dom.events.MouseEvent;
+import org.glassfish.tyrus.server.Server;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class AdminPageController implements Initializable {
 
     private WebSocketAdmin webSocketAdmin;
 
-    private A_foodPaneController controller;
+    private AdminFoodPaneController controller;
 
     private Connection con;
+
+    @FXML
+    private Button serverBtn;
 
     @FXML
     private Button connectToServerBtn;
@@ -172,6 +177,8 @@ public class AdminPageController implements Initializable {
         Optional<ButtonType> result = AlertClass.askConfirmAlert("Are you sure ????");
         if (result.isPresent() && result.get() == ButtonType.OK) {
             ChangePage.changePage(event, "loginPage.fxml");
+            AdminWebSocketClient.disconnect();
+            AdminWebSocketClient.setSession();
         }
     }
 
@@ -366,23 +373,26 @@ public class AdminPageController implements Initializable {
 
     @FXML
     void registerNewStaffBtnAction(ActionEvent event) {
-        if (checkingStaffData()) {
-            s_id = staffIdA.getText();
-            s_name = staffNameA.getText();
-            if (s_image == null) {
-                AlertClass.errorAlert("Select staff Photo");
-            } else {
-                Optional<ButtonType> option = AlertClass.askConfirmAlert("Are you sure?");
-                if (option.isPresent() && option.get() == ButtonType.OK) {
-                    Staff staff = Database.addNewStaff(con, s_id, s_name, s_type, s_pw, s_gender, s_mail, s_ph, s_dob, s_address, s_image, s_nrc, s_startDate);
-                    byte[] bytes = convertObjectToByteBuffer(staff);
-                    webSocketAdmin.sendMessageToClient(ByteBuffer.wrap(bytes));
-                    addNewStaffPane.setVisible(false);
-                    s_image = null;
-                    clearStaffTextFieldData();
+        if (webSocketAdmin != null) {
+            if (checkingStaffData()) {
+                s_id = staffIdA.getText();
+                s_name = staffNameA.getText();
+                if (s_image == null) {
+                    AlertClass.errorAlert("Select staff Photo");
+                } else {
+                    Optional<ButtonType> option = AlertClass.askConfirmAlert("Are you sure?");
+                    if (option.isPresent() && option.get() == ButtonType.OK) {
+                        Staff staff = Database.addNewStaff(con, s_id, s_name, s_type, s_pw, s_gender, s_mail, s_ph, s_dob, s_address, s_image, s_nrc, s_startDate);
+                        byte[] bytes = convertObjectToByteBuffer(staff);
+                        webSocketAdmin.sendMessageToClient(ByteBuffer.wrap(bytes));
+                        addNewStaffPane.setVisible(false);
+                        s_image = null;
+                        clearStaffTextFieldData();
+                    }
                 }
             }
-        }
+        } else
+            AlertClass.errorAlert("Connect to server");
     }
 
     private byte[] convertObjectToByteBuffer(Object object) {
@@ -399,7 +409,7 @@ public class AdminPageController implements Initializable {
     @FXML
     void importNewStaffImage(javafx.scene.input.MouseEvent event) {
         File imagePath = fileChooser.showOpenDialog(new Stage());
-        newStaffProfile.setImage(new Image("file:/" + imagePath));
+        newStaffProfile.setImage(new Image("file://" + imagePath));
         s_image = imagePath.getPath();
     }
 
@@ -548,41 +558,39 @@ public class AdminPageController implements Initializable {
 
     @FXML
     void updateStaffBtnAction(ActionEvent event) throws IOException {
-        Optional<ButtonType> optional = AlertClass.askConfirmAlert("Are you sure?");
-        if (optional.isPresent() && optional.get() == ButtonType.OK) {
-            String currentId = AppData.getObj().getCurrentId();
-            String updateId = staffIdU.getText();
-            String updateName = staffNameU.getText();
-            String pw = pwU.getText();
-            String nrc = nrcU.getText();
-            String email = mailU.getText();
-            String phone = phU.getText();
-            String address = addressU.getText();
+        if (webSocketAdmin != null) {
+            Optional<ButtonType> optional = AlertClass.askConfirmAlert("Are you sure?");
+            if (optional.isPresent() && optional.get() == ButtonType.OK) {
+                String currentId = AppData.getObj().getCurrentId();
+                String updateId = staffIdU.getText();
+                String updateName = staffNameU.getText();
+                String pw = pwU.getText();
+                String nrc = nrcU.getText();
+                String email = mailU.getText();
+                String phone = phU.getText();
+                String address = addressU.getText();
 
-            Staff staff = null;
+                Staff staff = null;
 
-            System.out.println(updateStatus);
-            System.out.println(updateQuitDate);
-            if (updateStatus.equals("Inactive")) {
-                System.out.println("Inside if");
-                if (updateQuitDate == null) {
-                    AlertClass.errorAlert("Enter Quit Date...");
+                if (updateStatus.equals("Inactive")) {
+                    if (updateQuitDate == null) {
+                        AlertClass.errorAlert("Enter Quit Date...");
+                    } else {
+                        staff = Database.updateStaff(con, currentId, updateId, updateName, staffType, pw, email, phone, updateDob, address, updatePhoto, nrc, updateStatus, updateStartDate, updateQuitDate);
+                    }
                 } else {
                     staff = Database.updateStaff(con, currentId, updateId, updateName, staffType, pw, email, phone, updateDob, address, updatePhoto, nrc, updateStatus, updateStartDate, updateQuitDate);
                 }
-            } else {
-                staff = Database.updateStaff(con, currentId, updateId, updateName, staffType, pw, email, phone, updateDob, address, updatePhoto, nrc, updateStatus, updateStartDate, updateQuitDate);
+
+                if (staff != null) {
+                    HashMap<String, Staff> updateStaffObj = new HashMap<>();
+                    updateStaffObj.put(currentId, staff);
+                    byte[] bytes = convertObjectToByteBuffer(updateStaffObj);
+                    webSocketAdmin.sendMessageToClient(ByteBuffer.wrap(bytes));
+                }
             }
-
-            if (staff != null) {
-                HashMap<String, Staff> updateStaffObj = new HashMap<>();
-                updateStaffObj.put(currentId, staff);
-                byte[] bytes = convertObjectToByteBuffer(updateStaffObj);
-                webSocketAdmin.sendMessageToClient(ByteBuffer.wrap(bytes));
-            }
-
-
-        }
+        }else
+            AlertClass.errorAlert("Connect to server");
     }
 
     @FXML
@@ -613,7 +621,7 @@ public class AdminPageController implements Initializable {
     @FXML
     void imageUpdateBtnActction(Event event) {
         File imagePath = fileChooser.showOpenDialog(new Stage());
-        staffImageU.setImage(new Image("file:/" + imagePath));
+        staffImageU.setImage(new Image("file://" + imagePath));
         updatePhoto = imagePath.getPath();
     }
 
@@ -627,7 +635,7 @@ public class AdminPageController implements Initializable {
                 if (list.get(i).getCategory_id().equals(category_id)) {
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("A_foodPane.fxml"));
+                        fxmlLoader.setLocation(getClass().getResource("AdminFoodPane.fxml"));
                         Pane root = fxmlLoader.load();
                         controller = fxmlLoader.getController();
                         controller.setValue(list.get(i));
@@ -661,7 +669,7 @@ public class AdminPageController implements Initializable {
                 if (list.get(i).getMenu_name().toLowerCase().contains(keyword)) {
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("A_foodPane.fxml"));
+                        fxmlLoader.setLocation(getClass().getResource("AdminFoodPane.fxml"));
                         Pane root = fxmlLoader.load();
                         controller = fxmlLoader.getController();
                         controller.setValue(list.get(i));
@@ -735,32 +743,35 @@ public class AdminPageController implements Initializable {
 
     @FXML
     void confirmaddNewMenu(ActionEvent event) {
-        if (takingTFData()) {
-            if (category_id == null) {
-                AlertClass.errorAlert("Select Category");
-            } else if (m_image == null) {
-                AlertClass.errorAlert("Select Menu Photo");
-            } else {
-                Optional<ButtonType> option = AlertClass.askConfirmAlert("Are you sure?");
-                if (option.isPresent() && option.get() == ButtonType.OK) {
-                    AllMenu menu = Database.addNewMenu(con, category_id, m_name, m_image, m_price, m_stocks);
-                    clearMenudata();
-                    menuPane.setVisible(false);
-                    m_image = null;/*?*/
+        if (webSocketAdmin != null) {
+            if (takingTFData()) {
+                if (category_id == null) {
+                    AlertClass.errorAlert("Select Category");
+                } else if (m_image == null) {
+                    AlertClass.errorAlert("Select Menu Photo");
+                } else {
+                    Optional<ButtonType> option = AlertClass.askConfirmAlert("Are you sure?");
+                    if (option.isPresent() && option.get() == ButtonType.OK) {
+                        AllMenu menu = Database.addNewMenu(con, category_id, m_name, m_image, m_price, m_stocks);
+                        clearMenudata();
+                        menuPane.setVisible(false);
+                        m_image = null;/*?*/
 
-                    /*send new menu to server and server send menu to client*/
-                    byte[] bytes = convertObjectToByteBuffer(menu);
-                    webSocketAdmin.sendMessageToClient(ByteBuffer.wrap(bytes));
+                        /*send new menu to server and server send menu to client*/
+                        byte[] bytes = convertObjectToByteBuffer(menu);
+                        webSocketAdmin.sendMessageToClient(ByteBuffer.wrap(bytes));
+                    }
                 }
             }
-        }
+        }else
+            AlertClass.errorAlert("Connect to server");
     }
 
     @FXML
     public void importNewMenuImage(Event event) {
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
-            menuImage.setImage(new Image("file:/" + file.getPath()));
+            menuImage.setImage(new Image("file://" + file.getPath()));
             m_image = file.getPath();
         }
     }
@@ -814,46 +825,50 @@ public class AdminPageController implements Initializable {
 
     @FXML
     void updateMenu(ActionEvent event) {
-        List<AllMenu> list = AppData.getObj().getMenus();
-        int id = AppData.getObj().getUpdate_id();
-        int stocks = (um_stocks.getText().isEmpty()) ? 0 : Integer.parseInt(um_stocks.getText());
-        double new_price = Double.parseDouble(um_unitPrice.getText());
-        for (int i = 0; i < list.size(); i++) {
-            if (id == list.get(i).getMenu_id()) {
-                old_price = list.get(i).getPrice();
-                break;
+        if (webSocketAdmin != null) {
+            List<AllMenu> list = AppData.getObj().getMenus();
+            int id = AppData.getObj().getUpdate_id();
+            int stocks = (um_stocks.getText().isEmpty()) ? 0 : Integer.parseInt(um_stocks.getText());
+            double new_price = Double.parseDouble(um_unitPrice.getText());
+            for (int i = 0; i < list.size(); i++) {
+                if (id == list.get(i).getMenu_id()) {
+                    old_price = list.get(i).getPrice();
+                    break;
+                }
             }
-        }
 
-        if (stocks != 0 || new_price != old_price || newU_Photo != null) {
-            Optional<ButtonType> optional = AlertClass.askConfirmAlert("Are you sure???");
-            if (optional.isPresent() && optional.get() == ButtonType.OK) {
-                AllMenu menuObj = Database.updateMenu(con, id, stocks, new_price, newU_Photo);
-                for (int i = 0; i < list.size(); i++) {// updating menu
-                    if (menuObj.getMenu_id() == list.get(i).getMenu_id()) {
-                        list.get(i).setMenu_name(menuObj.getMenu_name());
-                        list.get(i).setPhoto(menuObj.getPhoto());
-                        list.get(i).setPrice(menuObj.getPrice());
-                        list.get(i).setStocks(menuObj.getStocks());
-                        /*sending menu update to waiter page*/
-                        Map<Integer, AllMenu> map = new HashMap<>();
-                        map.put(id, menuObj);
-                        try {
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            ObjectOutputStream objOut = new ObjectOutputStream(out);
-                            objOut.writeObject(map);
-                            objOut.flush();
-                            byte[] bytes = out.toByteArray();
-                            webSocketAdmin.sendMessageToClient(ByteBuffer.wrap(bytes));
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+            if (stocks != 0 || new_price != old_price || newU_Photo != null) {
+                Optional<ButtonType> optional = AlertClass.askConfirmAlert("Are you sure???");
+                if (optional.isPresent() && optional.get() == ButtonType.OK) {
+                    AllMenu menuObj = Database.updateMenu(con, id, stocks, new_price, newU_Photo);
+                    for (int i = 0; i < list.size(); i++) {// updating menu
+                        if (menuObj.getMenu_id() == list.get(i).getMenu_id()) {
+                            list.get(i).setMenu_name(menuObj.getMenu_name());
+                            list.get(i).setPhoto(menuObj.getPhoto());
+                            list.get(i).setPrice(menuObj.getPrice());
+                            list.get(i).setStocks(menuObj.getStocks());
+                            /*sending menu update to waiter page*/
+                            Map<Integer, AllMenu> map = new HashMap<>();
+                            map.put(id, menuObj);
+                            try {
+                                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                                ObjectOutputStream objOut = new ObjectOutputStream(out);
+                                objOut.writeObject(map);
+                                objOut.flush();
+                                byte[] bytes = out.toByteArray();
+                                webSocketAdmin.sendMessageToClient(ByteBuffer.wrap(bytes));
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
                 }
+                refreshPage();
+                newU_Photo = null;/*?*/
+                updateMenuPane.setVisible(false);
             }
-            refreshPage();
-            newU_Photo = null;/*?*/
-            updateMenuPane.setVisible(false);
+        } else {
+            AlertClass.errorAlert("Connect to server");
         }
     }
 
@@ -867,15 +882,22 @@ public class AdminPageController implements Initializable {
     public void importUpdateMenuImage(Event event) {
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
-            um_image.setImage(new Image("file:/" + file.getPath()));
+            um_image.setImage(new Image("file://" + file.getPath()));
             newU_Photo = file.getPath();
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        /*to show alert to clients when server was stopped.*/
+        Stage stage = AppData.getObj().getPrimaryStage();
+        stage.setOnCloseRequest(e ->{
+            Server server = AppData.getObj().getServer();
+            if (server != null && webSocketAdmin != null) {
+                webSocketAdmin.sendDeleteMessageToClient("server was shut down");
+            }
+        });
         /*connect to server*/
-
         con = AppData.getObj().getConnection();
 
         menuList = AppData.getObj().getMenus();
@@ -885,10 +907,13 @@ public class AdminPageController implements Initializable {
         if (webSocketAdmin == null) {
             connectToServerBtn.setText("Connect to Server");
             connectToServerBtn.setStyle("-fx-text-fill: #000");
-        }else{
+        } else {
             connectToServerBtn.setText("Connected");
             connectToServerBtn.setStyle("-fx-text-fill: red");
         }
+
+        AppData.getObj().setServerBtn(serverBtn);
+        AppData.getObj().setConnectToServerBtn(connectToServerBtn);
 
         List<GridPane> gridPaneList = new ArrayList<>();
         gridPaneList.add(searchGP);
@@ -942,7 +967,7 @@ public class AdminPageController implements Initializable {
             }
         });
 
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home"), "Pictures"));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
         categoryList = AppData.getObj().getCategoryList();
         for (int i = 0; i < categoryList.size(); i++) {
@@ -1051,14 +1076,20 @@ public class AdminPageController implements Initializable {
         if (serverIpAddress == null) {
             serverIpAddress = Database.getServerIpAddress(AppData.getObj().getConnection());
         }
-        webSocketAdmin = AppData.getObj().getWebSocketAdmin();
-        if (webSocketAdmin == null) {
+
+        if (AdminWebSocketClient.getSession() == null) {
             String serverURL = "ws://" + serverIpAddress.trim() + ":8080/ws/hangOutServer";
             webSocketAdmin = new WebSocketAdmin(serverURL);
             AppData.getObj().setWebSocketAdmin(webSocketAdmin);
+            connectToServerBtn.setText("Connected");
+            connectToServerBtn.setStyle("-fx-text-fill: red");
         }
-        connectToServerBtn.setText("Connected");
-        connectToServerBtn.setStyle("-fx-text-fill: red");
+
+    }
+
+    public void showAlertServerConnectionFailed() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+        AlertClass.errorAlert("Server was shut down on " + formatter.format(LocalDateTime.now()));
     }
 
 

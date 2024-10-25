@@ -7,12 +7,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+import javax.websocket.Session;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-
 
 public class TableController implements Initializable {
 
@@ -31,13 +31,6 @@ public class TableController implements Initializable {
 
     private SetListViewData setListViewData;
 
-    private Connection con;
-
-    private WebSocketClient webSocketClient = null;
-
-    private String serverIpAddress = null;
-
-
     @FXML
     void tableAction(MouseEvent event) {
 
@@ -50,13 +43,12 @@ public class TableController implements Initializable {
 
         switch (status) {
             case "available":
-                webSocketClient = AppData.getObj().getWebSocketClient();
-                if (webSocketClient != null) {
-                    ChangePage.changePage(event, "homePage.fxml");
+                if (WaiterWebSocketClient.getSession() != null) {
+                    ChangePage.changePage(event, "waiterPage.fxml");
                     label = AppData.getObj().getS_Page_tblNumber();
                     label.setText(tbl_no);
                     changeTableStatus(tableList, num);
-                }else
+                } else
                     AlertClass.errorAlert("Start Server First !!!");
                 break;
             case "reserved":
@@ -69,18 +61,16 @@ public class TableController implements Initializable {
                 }
                 break;
             case "unavailable":
-                webSocketClient = AppData.getObj().getWebSocketClient();
-                if (webSocketClient != null) {
-                    ChangePage.changePage(event, "homePage.fxml");
+                if (WaiterWebSocketClient.getSession() != null) {
+                    ChangePage.changePage(event, "waiterPage.fxml");
                     label = AppData.getObj().getS_Page_tblNumber();
                     label.setText(tbl_no);
                     if (map.get(num) != null && map.get(num) != 0) {
                         setListViewData.setListViewData(map.get(num));
                     }
-                }else
+                } else
                     AlertClass.errorAlert("Start Server First !!!");
                 break;
-
         }
     }
 
@@ -94,7 +84,6 @@ public class TableController implements Initializable {
             }
         }
     }
-
 
     public void setValue(Table table) {
         table_lb.setText("Table - " + table.getTableNumber());
@@ -114,7 +103,6 @@ public class TableController implements Initializable {
                 break;
         }
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         confirmBookingPane = AppData.getObj().getConfirmBookingPane();

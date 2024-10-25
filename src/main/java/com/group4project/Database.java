@@ -8,33 +8,30 @@ import java.util.List;
 
 public class Database {
     private static Connection con = null;
-
+//    public static Connection createConnection() {
+//
+//        try {
+//            System.out.println("Starting to connect");
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            con = DriverManager.getConnection("jdbc:mysql://mysql-schprj-phkvpn-d7db.h.aivencloud.com:24048/order_and_booking_sys?ssl-mode=REQUIRED", "avnadmin", "AVNS_CO5NqwLOMTS7Km6oFcC");
+//            System.out.println("DB Connected !!!");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            AlertClass.errorAlert(e.getMessage());
+//        }
+//        return con;
+//    }
     public static Connection createConnection() {
-
         try {
-            System.out.println("Starting to connect");
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://mysql-schprj-phkvpn-d7db.h.aivencloud.com:24048/order_and_booking_sys?ssl-mode=REQUIRED", "avnadmin", "AVNS_CO5NqwLOMTS7Km6oFcC");
-            System.out.println("DB Connected !!!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            AlertClass.errorAlert(e.getMessage());
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/CafeShopManagementSystem", "root", "");
+            System.out.println("DB connected !!");
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
         }
         return con;
     }
-//public static Connection createConnection() {
-//
-//    try {
-//        System.out.println("Starting to connect");
-//        Class.forName("com.mysql.cj.jdbc.Driver");
-//        con = DriverManager.getConnection("jdbc:mysql://CLICK_TO:REVEAL_PASSWORD@test-db1-myothirinaing02-b688.b.aivencloud.com:11108/defaultdb?ssl-mode=REQUIRED", "avnadmin", "AVNS_KsiSbK6tUhhZNXehxLP");
-//        System.out.println("DB Connected !!!");
-//    } catch (Exception e) {
-//        e.printStackTrace();
-//      //  AlertClass.errorAlert(e.getMessage());
-//    }
-//    return con;
-//}
+
 
     public static void setServerIpAddress(Connection con, String serverIpAddress) {
         try (Statement st = con.createStatement();){
