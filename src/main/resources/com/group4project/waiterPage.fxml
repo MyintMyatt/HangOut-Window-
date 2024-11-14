@@ -20,7 +20,7 @@
    <center>
       <AnchorPane prefHeight="682.0" prefWidth="587.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane fx:id="searchPane" layoutY="75.2" prefHeight="629.0" prefWidth="747.0" style="-fx-background-color: lightgray;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
+            <ScrollPane fx:id="searchPane" layoutY="75.2" prefHeight="629.0" prefWidth="747.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
                <content>
                   <GridPane fx:id="searchGP">
                      <rowConstraints>
@@ -56,7 +56,7 @@
                   </GridPane>
                </content>
             </ScrollPane>
-            <ScrollPane fx:id="starterPane" layoutY="76.8" prefHeight="627.0" prefWidth="747.0" style="-fx-background-color: blue;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="77.0">
+            <ScrollPane fx:id="starterPane" layoutY="76.8" prefHeight="627.0" prefWidth="747.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="77.0">
                <content>
                   <GridPane fx:id="starterGP">
                      <rowConstraints>

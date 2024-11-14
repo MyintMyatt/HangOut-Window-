@@ -177,8 +177,8 @@ public class AdminPageController implements Initializable {
         Optional<ButtonType> result = AlertClass.askConfirmAlert("Are you sure ????");
         if (result.isPresent() && result.get() == ButtonType.OK) {
             ChangePage.changePage(event, "loginPage.fxml");
-            AdminWebSocketClient.disconnect();
-            AdminWebSocketClient.setSession();
+//            AdminWebSocketClient.disconnect();
+//            AdminWebSocketClient.setSession();
         }
     }
 
@@ -1081,14 +1081,14 @@ public class AdminPageController implements Initializable {
             String serverURL = "ws://" + serverIpAddress.trim() + ":8080/ws/hangOutServer";
             webSocketAdmin = new WebSocketAdmin(serverURL);
             AppData.getObj().setWebSocketAdmin(webSocketAdmin);
-            connectToServerBtn.setText("Connected");
-            connectToServerBtn.setStyle("-fx-text-fill: red");
+//            connectToServerBtn.setText("Connected");
+//            connectToServerBtn.setStyle("-fx-text-fill: red");
         }
 
     }
 
     public void showAlertServerConnectionFailed() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd / HH:mm:ss");
         AlertClass.errorAlert("Server was shut down on " + formatter.format(LocalDateTime.now()));
     }
 

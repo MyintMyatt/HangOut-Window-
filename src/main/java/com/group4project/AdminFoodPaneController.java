@@ -103,5 +103,12 @@ public class AdminFoodPaneController implements Initializable {
 
        current_stocks_tf.setEditable(false);/*?*/
 
+        // Set ImageView properties
+//        image.setFitWidth(200); // Set desired width
+//        image.setFitHeight(200); // Set desired height
+        image.setPreserveRatio(true);
+        image.setSmooth(true);  // For better quality scaling
+        image.setCache(true);   // For performance
+
     }
 }

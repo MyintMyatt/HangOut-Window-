@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.glassfish.tyrus.server.Server;
 
 import javax.websocket.Session;
 import java.io.IOException;
@@ -122,6 +123,11 @@ public class TablePageController implements Initializable {
 
     private void setupCloseRequestHandler(Stage primaryStage) {
         primaryStage.setOnCloseRequest(event -> {
+            WebSocketAdmin webSocketAdmin = AppData.getObj().getWebSocketAdmin();
+            Server server = AppData.getObj().getServer();
+            if (server != null && webSocketAdmin != null) {
+                webSocketAdmin.sendDeleteMessageToClient("server was shut down");
+            }
             if (timer != null) {
                 timer.cancel();
             }
@@ -165,8 +171,8 @@ public class TablePageController implements Initializable {
             ChangePage.changePage(event, "loginPage.fxml");
         }
     }
-    public void showAlertServerConnectionFailed() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
-        AlertClass.errorAlert("Server was shut down on " + formatter.format(LocalDateTime.now()));
-    }
+//    public void showAlertServerConnectionFailed() {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd / HH:mm:ss");
+//        AlertClass.errorAlert("Server was shut down on " + formatter.format(LocalDateTime.now()));
+//    }
 }

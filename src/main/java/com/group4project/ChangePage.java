@@ -16,8 +16,10 @@ public class ChangePage {
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Hangout");
-            stage.setResizable(true);
+            stage.setMaximized(false);
             stage.setMaximized(true);
+            stage.setResizable(true);
+            stage.centerOnScreen();
             stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);

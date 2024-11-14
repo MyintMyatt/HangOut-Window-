@@ -300,13 +300,13 @@ public class AdminWebSocketClient {
         System.out.println("admin disconnected from server : " + session.getId());
     }
 
-    public static void disconnect() {
-        try {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public static void disconnect() {
+//        try {
+//            if (session != null && session.isOpen()) {
+//                session.close();
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

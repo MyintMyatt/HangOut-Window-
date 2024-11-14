@@ -183,6 +183,13 @@ public class WaiterFoodPaneController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         listView = AppData.getObj().getListView();
         totalAmount = AppData.getObj().getTotal_amount();
+        // Set ImageView properties
+//        image.setFitWidth(200); // Set desired width
+//        image.setFitHeight(200); // Set desired height
+        image.setPreserveRatio(true);
+        image.setSmooth(true);  // For better quality scaling
+        image.setCache(true);   // For performance
+
     }
 
 }

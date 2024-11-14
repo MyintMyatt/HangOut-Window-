@@ -21,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.glassfish.tyrus.server.Server;
 
 public class LoginController implements Initializable {
 
@@ -154,6 +155,13 @@ public class LoginController implements Initializable {
     }
     private void setupCloseRequestHandler(Stage primaryStage) {
         primaryStage.setOnCloseRequest(event -> {
+
+            WebSocketAdmin webSocketAdmin = AppData.getObj().getWebSocketAdmin();
+            Server server = AppData.getObj().getServer();
+            if (server != null && webSocketAdmin != null) {
+                webSocketAdmin.sendDeleteMessageToClient("server was shut down");
+            }
+
             if (thread_1 != null && thread_1.isAlive()) {
                 thread_1.interrupt();
             }

@@ -1,6 +1,7 @@
 package com.group4project;
 
 import javafx.application.Platform;
+import javafx.scene.control.Button;
 
 import javax.websocket.ContainerProvider;
 import javax.websocket.Session;
@@ -16,6 +17,9 @@ public class WebSocketAdmin {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             session = container.connectToServer(AdminWebSocketClient.class, new URI(serverURI));
             AlertClass.confirmAlert("Successfully connected to server!");
+            Button connectToServerBtn = AppData.getObj().getConnectToServerBtn();
+            connectToServerBtn.setText("Connected");
+            connectToServerBtn.setStyle("-fx-text-fill: red");
         } catch (Exception e) {
             Platform.runLater(() -> {
                 AlertClass.errorAlert("Start server first!!!");

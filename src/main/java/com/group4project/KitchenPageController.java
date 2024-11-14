@@ -9,6 +9,9 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import org.glassfish.tyrus.server.Server;
+
 import javax.websocket.ContainerProvider;
 import javax.websocket.WebSocketContainer;
 import java.io.IOException;
@@ -122,6 +125,7 @@ public class KitchenPageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         AppData.getObj().setOrderGP(orderGP);
+        stageOnCloseAction(AppData.getObj().getPrimaryStage());
         /*connected to server*/
         try {
             String serverIpAddress = Database.getServerIpAddress(AppData.getObj().getConnection());
@@ -138,8 +142,22 @@ public class KitchenPageController implements Initializable {
 
         }
     }
+
+    private void stageOnCloseAction(Stage stage) {
+        stage.setOnCloseRequest(e -> {
+            WebSocketAdmin webSocketAdmin = AppData.getObj().getWebSocketAdmin();
+            Server server = AppData.getObj().getServer();
+
+            if (server != null && webSocketAdmin != null) /*if admin started server and he logined in staff page, to send server down message  */
+                webSocketAdmin.sendDeleteMessageToClient("server was shut down");
+            else
+                System.exit(0);/*for only staff*/
+
+        });
+    }
+
     public void showAlertServerConnectionFailed() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd / HH:mm:ss");
         AlertClass.errorAlert("Server was shut down on " + formatter.format(LocalDateTime.now()));
     }
 }

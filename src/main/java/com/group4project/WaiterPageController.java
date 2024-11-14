@@ -18,10 +18,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import javafx.stage.Stage;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
+import org.glassfish.tyrus.server.Server;
 
 public class WaiterPageController implements Initializable {
 
@@ -241,30 +243,32 @@ public class WaiterPageController implements Initializable {
         }
     }
 
-    public void refreshUI() {
-        switch (categoryLabel.getText().toLowerCase()) {
-            case "main dishes":
-                setMenuPaneNewOne(dishGP, "1");
-                break;
-            case "drinks":
-                setMenuPaneNewOne(coolDrinkGP, "2");
-                break;
-            case "starters":
-                setMenuPaneNewOne(starterGP, "3");
-                break;
-            case "soup":
-                setMenuPaneNewOne(soupGP, "4");
-                break;
-            case "searching menu":
-            case "":
-                searchingMenu(searchGP, "");
-                break;
-        }
-    }
+//    public void refreshUI() {
+//        switch (categoryLabel.getText().toLowerCase()) {
+//            case "main dishes":
+//                setMenuPaneNewOne(dishGP, "1");
+//                break;
+//            case "drinks":
+//                setMenuPaneNewOne(coolDrinkGP, "2");
+//                break;
+//            case "starters":
+//                setMenuPaneNewOne(starterGP, "3");
+//                break;
+//            case "soup":
+//                setMenuPaneNewOne(soupGP, "4");
+//                break;
+//            case "searching menu":
+//            case "":
+//                searchingMenu(searchGP, "");
+//                break;
+//        }
+//    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         con = AppData.getObj().getConnection();
+
+        stageOnCloseAction(AppData.getObj().getPrimaryStage());
 
         webSocketClient = AppData.getObj().getWebSocketClient();
 
@@ -299,6 +303,18 @@ public class WaiterPageController implements Initializable {
             searchingMenu(searchGP, newvalue.toLowerCase());
         });
     }
+    private void stageOnCloseAction(Stage stage) {
+        stage.setOnCloseRequest(e -> {
+            WebSocketAdmin webSocketAdmin = AppData.getObj().getWebSocketAdmin();
+            Server server = AppData.getObj().getServer();
+
+            if (server != null && webSocketAdmin != null) /*if admin started server and he logined in staff page, to send server down message  */
+                webSocketAdmin.sendDeleteMessageToClient("server was shut down");
+            else
+                System.exit(0);/*for only staff*/
+
+        });
+    }
 
     private int orderId;
     private String staffId;
@@ -306,7 +322,7 @@ public class WaiterPageController implements Initializable {
     private int row = 0;//for new order items
     private Map<Integer, Integer> orderMap;
     private Map<Integer, Integer> rowMap;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd / HH:mm:ss");
 
     @FXML
     void orderBtnAction(ActionEvent event) {
@@ -428,7 +444,6 @@ public class WaiterPageController implements Initializable {
 
             Map<String, Object> data = new HashMap<>();
             data.put("orderNo", orderId);
-            data.put("photo", getClass().getResource("logo.png").getPath());
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, data, con);
             JasperViewer.viewReport(jasperPrint, false);
 
